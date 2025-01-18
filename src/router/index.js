@@ -5,9 +5,10 @@ import Homeworks from '../views/Homeworks.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path: '/homework', component: Homeworks },
+  { path: '/', name: 'HomeworkView', component: Home },
+  { path: '/login', name: "LoginView", component: Login },
+  { path: '/homework/upload/:name', name: 'HomeworkUpload', component: Homeworks },
+  { path: '/homework/detail/:name', name: 'HomeworkDetail', component: Homeworks },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 

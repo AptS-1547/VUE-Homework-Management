@@ -1,7 +1,7 @@
 <template>
     <div>
       <Header />        
-      <LoginInfo v-if="showNotification" :message="notificationMessage" :type="notificationType" @close="showNotification = false" />
+      <MessageInfo v-if="showNotification" :message="notificationMessage" :type="notificationType" @close="showNotification = false" />
     
       <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 mx-auto p-6">
 
@@ -65,7 +65,7 @@
   import { login } from '@/api'
   import { isLogin } from '@/utils/auth'
   import Header from '@/components/Header.vue'
-  import LoginInfo from '@/components/LoginInfo.vue'
+  import MessageInfo from '@/components/MessageInfo.vue'
 
   const router = useRouter()
 

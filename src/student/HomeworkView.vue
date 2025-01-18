@@ -4,7 +4,7 @@
     <p class="text-center mb-4">老师共布置了{{ homeworkData.length }}个作业</p>
     <div v-if="homeworkData.length">
       <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 p-12">
-        <li v-for="homework in homeworkData" :key="homework.name" class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow-sm">
+        <li v-for="homework in homeworkData" :key="homework.name" class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow-sm cursor-pointer" @click="goToHomeworkDetail(homework.name, homework.status)">
           <div class="flex w-full items-center justify-between space-x-6 p-6">
             <div class="flex-1 truncate">
               <div class="flex items-center space-x-3">
@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getStudentHomeworks } from '@/api/index.js'
+import { getStudentHomeworks } from '@/api/homework.js'
 import { cleanJwt } from '../utils/auth';
 import router from '../router';
 
@@ -59,4 +59,12 @@ onMounted(async () => {
     console.error('Failed to fetch homeworks:', error.message)
   }
 })
+
+const goToHomeworkDetail = (homeworkName, homeworkStatus) => {
+  if (homeworkStatus === 0) {
+    router.push({ name: 'HomeworkUpload', params: { name: homeworkName } })
+  } else {
+    router.push({ name: 'HomeworkDetail', params: { name: homeworkName } })
+  }
+}
 </script>
