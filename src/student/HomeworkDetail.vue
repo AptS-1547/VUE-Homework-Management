@@ -33,13 +33,13 @@
                     <label for="text" class="block sm:text-base font-semibold text-gray-900">学生批注</label>
                     <div class="mt-3">
                         <div class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-black outline-gray-200 sm:text-base">
-                            {{ homeworkData.stu_comment }}
+                            {{ homeworkData.comment }}
                         </div>
                     </div>
                     <label for="text" class="mt-3 block sm:text-base font-semibold text-gray-900">老师评价</label>
                     <div class="mt-3">
                         <div class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-black outline-gray-200 sm:text-base">
-                            {{ homeworkData.tec_comment }}
+                            {{ homeworkData.teacher_reply }}
                         </div>
                     </div>
                 </div>
@@ -87,12 +87,12 @@
         const data = await getStudentHomeworks()
         homeworkData.value = data.homework_data[homeworkName.value]
 
-        if (homeworkData.value.stu_comment === "") {
-            homeworkData.value.stu_comment = "你没有写批注哦"
+        if (homeworkData.value.comment === "") {
+            homeworkData.value.comment = "你没有写批注哦"
         }
 
-        if (homeworkData.value.tec_comment === "") {
-            homeworkData.value.tec_comment = "老师还没有评价哦"
+        if (homeworkData.value.teacher_reply === "") {
+            homeworkData.value.teacher_reply = "老师还没有评价哦"
         }
 
         homeworkData.value.file = homeworkData.value.file.map((file) => {

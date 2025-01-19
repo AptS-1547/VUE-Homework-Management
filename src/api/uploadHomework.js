@@ -1,8 +1,5 @@
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 import { getJwt, cleanJwt } from '@/utils/auth'
-
-const router = useRouter()
 
 export async function uploadHomework(homework_name, comment, files) {
     try {
@@ -24,7 +21,7 @@ export async function uploadHomework(homework_name, comment, files) {
         console.log(error.message)
         if (error.response.status === 401) {
             cleanJwt()
-            router.push('/login')
+            window.location.href = '/login'
             throw new Error('Unauthorized')
         }
         throw new Error(error.response.data.message || 'Failed to upload homework')
