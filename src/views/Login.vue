@@ -1,7 +1,7 @@
 <template>
     <div>
       <Header />        
-      <MessageInfo v-if="showNotification" :message="notificationMessage" :type="notificationType" @close="showNotification = false" />
+      <MessageInfo ref="messageInfo" />
     
       <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 mx-auto p-6">
 
@@ -72,9 +72,8 @@
   const username = ref('')
   const password = ref('')
   const rememberMe = ref(Boolean)
-  const showNotification = ref(false)
-  const notificationMessage = ref('')
-  const notificationType = ref('')
+
+  const messageInfo = ref(null)
 
   if (isLogin()) {
     router.push('/')
@@ -84,24 +83,20 @@
     try {
       const response = await login(username.value, password.value)
 
-      notificationMessage.value = 'Logging in...'
-      notificationType.value = 'info'
-      showNotification.value = true // 立即显示提示窗口
+      messageInfo.value.setMessage('登录中……', 'info')
 
       if (response.code === 1) {
-        notificationMessage.value = 'Login failed: User or Password is incorrect'
-        notificationType.value = 'error'
+        messageInfo.value.setMessage('用户名或密码错误', 'error')
       } else if (response.code === 0) {
         const token = response.access_token
         Cookies.set('access_token', token, { expires: rememberMe.value ? 7 : null }) // 设置cookie，7天过期时间
         router.push('/')
       } else {
-        notificationMessage.value = 'System error: ' + response.message
-        notificationType.value = 'error'
+        messageInfo.value.setMessage('系统错误: ' + response.message, 'error')
       }
     } catch (error) {
-      notificationMessage.value = 'System error: 1' + error.message
-      notificationType.value = 'error'
+      console.error('Failed to login:', error.message)
+      messageInfo.value.setMessage('系统错误', 'error')
     }
   }
   </script>

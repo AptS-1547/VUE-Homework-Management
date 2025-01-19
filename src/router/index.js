@@ -9,6 +9,7 @@ const routes = [
   { path: '/login', name: "LoginView", component: Login },
   { path: '/homework/upload/:name', name: 'HomeworkUpload', component: Homeworks },
   { path: '/homework/detail/:name', name: 'HomeworkDetail', component: Homeworks },
+  { path: '/homework/check/:student/:name', name: 'HomeworkCheck', component: Homeworks},
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 

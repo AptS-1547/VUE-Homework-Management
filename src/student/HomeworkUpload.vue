@@ -1,5 +1,5 @@
 <template>
-    <MessageInfo v-if="showNotification" :message="notificationMessage" :type="notificationType" @close="showNotification = false" />
+    <MessageInfo ref="messageInfo" />
     <div class="py-10">
       <header>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,16 +31,16 @@
   <script setup>
   import { ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { uploadHomework } from '@/api/uploadHomework'
+  import { uploadHomework } from '@/api/upload'
   import MessageInfo from '@/components/MessageInfo.vue'
 
   const route = useRoute()
   const router = useRouter()
   const homeworkName = ref(route.params.name)
-  const showNotification = ref(false)
-  const notificationMessage = ref('')
-  const notificationType = ref('')
+
   const isSubmitting = ref(false)
+
+  const messageInfo = ref(null)
 
   const handleUpload = async () => {
     try {
@@ -49,31 +49,27 @@
       const commentValue = comment.value
 
       if (files.length === 0) {
-        alert('请至少选择一个文件')
+        messageInfo.value.show('请至少上传一个文件', 'error')
         isSubmitting.value = false
         return
       }
 
       const response = await uploadHomework(homeworkName.value, commentValue, files)
-      notificationMessage.value = '提交作业中……'
-      notificationType.value = 'info'
-      showNotification.value = true // 立即显示提示窗口
+      messageInfo.value.show('提交作业中……', 'info')
+      isSubmitting.value = true
 
       if (response.code === 0) {
-        notificationMessage.value = '作业提交成功'
-        notificationType.value = 'success'
-        isSubmitting.value = true
+        messageInfo.value.show('作业提交成功', 'success')
         setTimeout(() => {
             router.push('/')
         }, 2000)
       } else {
-        notificationMessage.value = '作业提交失败'
-        notificationType.value = 'error'
+        messageInfo.value.show('作业提交失败', 'error')
+        isSubmitting.value = false
       }
     } catch (error) {
       console.error('Failed to upload homework:', error.message)
-      notificationMessage.value = '作业提交失败'
-      notificationType.value = 'error'
+      messageInfo.value.show('作业提交失败', 'error')
     }
   }
 

@@ -14,6 +14,7 @@
   import Header from '../components/Header.vue'
   import HomeworkUpload from '@/student/HomeworkUpload.vue'
   import HomeworkDetail from '@/student/HomeworkDetail.vue'
+  import HomeworkCheck from '../teacher/HomeworkCheck.vue'
 
   const route = useRoute()
   const dynamicComponent = shallowRef(null)
@@ -27,8 +28,8 @@
         dynamicComponent.value = HomeworkDetail
       }
     } else if (role === 'teacher') {
-      if (route.name === 'HomeworkUpload') {
-        dynamicComponent.value = HomeworkUpload
+      if (route.name === 'HomeworkCheck') {
+        dynamicComponent.value = HomeworkCheck
       } else {
         dynamicComponent.value = HomeworkDetail
       }

@@ -27,3 +27,22 @@ export async function uploadHomework(homework_name, comment, files) {
         throw new Error(error.response.data.message || 'Failed to upload homework')
     }
 }
+
+export async function replyHomework(student, homework, reply) {
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/teacher/replyHomework`, {student: student, homework: homework, reply: reply }, {
+            headers: {
+                'Authorization': `Bearer ${getJwt()}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.log(error)
+        if (error.response.status === 401) {
+            cleanJwt()
+            window.location.href = '/login'
+            throw new Error('Unauthorized')
+        }
+        throw new Error(error.response.data.message || 'Failed to reply homework')
+    }
+}
