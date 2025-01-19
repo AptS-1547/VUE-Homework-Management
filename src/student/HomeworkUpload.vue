@@ -49,27 +49,27 @@
       const commentValue = comment.value
 
       if (files.length === 0) {
-        messageInfo.value.show('请至少上传一个文件', 'error')
+        messageInfo.value.setMessage('请至少上传一个文件', 'error')
         isSubmitting.value = false
         return
       }
 
       const response = await uploadHomework(homeworkName.value, commentValue, files)
-      messageInfo.value.show('提交作业中……', 'info')
+      messageInfo.value.setMessage('提交作业中……', 'info')
       isSubmitting.value = true
 
       if (response.code === 0) {
-        messageInfo.value.show('作业提交成功', 'success')
+        messageInfo.value.setMessage('作业提交成功', 'success')
         setTimeout(() => {
             router.push('/')
         }, 2000)
       } else {
-        messageInfo.value.show('作业提交失败', 'error')
+        messageInfo.value.setMessage('作业提交失败', 'error')
         isSubmitting.value = false
       }
     } catch (error) {
       console.error('Failed to upload homework:', error.message)
-      messageInfo.value.show('作业提交失败', 'error')
+      messageInfo.value.setMessage('作业提交失败', 'error')
     }
   }
 

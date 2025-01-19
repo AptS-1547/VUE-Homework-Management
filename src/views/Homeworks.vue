@@ -21,7 +21,7 @@
 
   onMounted(() => {
     const role = getUserRole()
-    if (role === 'student') {
+    if (role === 'student'|| role === 'classrep') {
       if (route.name === 'HomeworkUpload') {
         dynamicComponent.value = HomeworkUpload
       } else {

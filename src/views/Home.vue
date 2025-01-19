@@ -18,7 +18,7 @@ const dynamicComponent = shallowRef(null)
 
 onMounted(() => {
   const role = getUserRole()
-  if (role === 'student') {
+  if (role === 'student' || role === 'classrep') {
     dynamicComponent.value = HomeworkView
   } else if (role === 'teacher') {
     dynamicComponent.value = HomeworkOverview
