@@ -19,8 +19,13 @@
                   <span class="inline-flex shrink-0 items-center rounded-full bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset">已批改</span>
                 </div>
               </div>
-              <div v-if="homework.status !== 0" class="flex items-center space-x-1">
-                <p class="mt-1 truncate text-sm text-gray-500">提交时间: {{ homework.timestamp }}</p>
+              <div class="flex items-center space-x-1">
+                <p v-if="homework.content !== ''" class="mt-1 truncate text-sm text-gray-500">作业信息: {{ homework.content }}</p>
+                <p v-else class="mt-1 truncate text-sm text-gray-500">作业信息: 未设置</p>
+              </div>
+              <div class="flex items-center space-x-1">
+                <p v-if="homework.status !== 0" class="mt-1 truncate text-sm text-gray-500">提交时间: {{ homework.timestamp }}</p>
+                <p v-else class="mt-1 truncate text-sm text-gray-500">提交时间: 未提交</p>
               </div>
             </div>
           </div>

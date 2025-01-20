@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <div class="px-4 py-5 mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:p-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                <div class="px-4 py-4 mt-auto grid grid-cols-1 gap-x-6 gap-y-10 sm:p-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     <div v-for="image in homeworkData.file" :key="image.name" class="group relative" @click="openModal(image.src)">
                         <img :src="image.src" alt="" class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80 cursor-pointer" />
                         <div class="mt-4 flex justify-between">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="px-4 py-5 sm:p-6">
+                <div class="px-4 py-4 sm:p-6 mt-auto">
                     <label for="text" class="block sm:text-lg font-semibold text-gray-900">学生批注</label>
                     <div class="mt-3">
                         <div class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-black outline-gray-200 sm:text-base">
@@ -109,8 +109,8 @@
         homeworkData.value.file = homeworkData.value.file.map((file) => {
             return {
                 name: file,
-                href: `${import.meta.env.VITE_APP_API_URL}/static/uploads/${homeworkName.value}/${file}`,
-                src: `${import.meta.env.VITE_APP_API_URL}/static/uploads/${homeworkName.value}/${file}`
+                href: `${import.meta.env.VITE_APP_API_URL}/uploads/${homeworkName.value}/${file}`,
+                src: `${import.meta.env.VITE_APP_API_URL}/uploads/${homeworkName.value}/${file}`
             }
         })
 

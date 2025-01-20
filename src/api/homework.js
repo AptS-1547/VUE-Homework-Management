@@ -23,7 +23,7 @@ export async function getTeacherHomeworks(params = {}) {
 
   if (params.student && params.homework) {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/teacher/getStudentHomework/${params.student}/${params.homework}`, {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/teacher/getHomework/${params.student}/${params.homework}`, {
             headers: {
                 'Authorization': `Bearer ${getJwt()}`
             }

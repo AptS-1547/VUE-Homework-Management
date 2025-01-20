@@ -34,7 +34,7 @@
         dynamicComponent.value = HomeworkDetail
       }
     } else {
-      console.error('Unknown role:', role)
+      window.location.href = '/404'
     }
   })
   

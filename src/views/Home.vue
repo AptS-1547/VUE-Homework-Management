@@ -23,7 +23,7 @@ onMounted(() => {
   } else if (role === 'teacher') {
     dynamicComponent.value = HomeworkOverview
   } else {
-    console.error('Unknown role:', role)
+    window.location.href = '/404'
   }
 })
 </script>

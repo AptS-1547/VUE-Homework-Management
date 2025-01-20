@@ -98,8 +98,8 @@
         homeworkData.value.file = homeworkData.value.file.map((file) => {
             return {
                 name: file,
-                href: `${import.meta.env.VITE_APP_API_URL}/static/uploads/${homeworkName.value}/${file}`,
-                src: `${import.meta.env.VITE_APP_API_URL}/static/uploads/${homeworkName.value}/${file}`
+                href: `${import.meta.env.VITE_APP_API_URL}/uploads/${homeworkName.value}/${file}`,
+                src: `${import.meta.env.VITE_APP_API_URL}/uploads/${homeworkName.value}/${file}`
             }
         })
 
