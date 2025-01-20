@@ -60,7 +60,7 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { cleanJwt } from '../utils/auth';
+  import { cleanJwt } from '@/utils/auth';
   import { getStudentHomework } from '@/api/homework.js'
 
   const route = useRoute()

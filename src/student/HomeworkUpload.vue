@@ -32,7 +32,7 @@
   <script setup>
   import { ref, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { getStudentHomework } from '../api/homework'
+  import { getStudentHomework } from '@/api/homework'
   import { uploadHomework } from '@/api/upload'
   import MessageInfo from '@/components/MessageInfo.vue'
 
