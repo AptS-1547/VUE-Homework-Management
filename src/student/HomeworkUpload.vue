@@ -54,8 +54,8 @@
         return
       }
 
-      const response = await uploadHomework(homeworkName.value, commentValue, files)
       messageInfo.value.setMessage('提交作业中……', 'info')
+      const response = await uploadHomework(homeworkName.value, commentValue, files)
       isSubmitting.value = true
 
       if (response.code === 0) {

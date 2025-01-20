@@ -124,8 +124,8 @@
     const handleReply = async () => {
         try {
         isSubmitting.value = true
-        const response = await replyHomework(studentName.value, homeworkName.value, reply.value)
         messageInfo.value.setMessage('评价中……', 'info')
+        const response = await replyHomework(studentName.value, homeworkName.value, reply.value)
 
         if (response.code === 0) {
             messageInfo.value.setMessage('评价成功', 'success')

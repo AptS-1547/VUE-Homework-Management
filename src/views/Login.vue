@@ -77,9 +77,9 @@
 
   async function handleLogin() {
     try {
-      const response = await login(username.value, password.value, rememberMe.value)
 
       messageInfo.value.setMessage('登录中……', 'info')
+      const response = await login(username.value, password.value, rememberMe.value)
 
       if (response.code === 1) {
         messageInfo.value.setMessage('用户名或密码错误', 'error')
