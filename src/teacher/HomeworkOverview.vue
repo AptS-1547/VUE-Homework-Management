@@ -56,10 +56,14 @@ onMounted(async () => {
     // 将 homework_data 对象转换为数组
     homeworkData.value = Object.values(homeworks.value.homework_data).sort((a, b) => {
       const statusOrder = { 1: 2, 2: 0, 0: 1 }
-      return statusOrder[b.status] - statusOrder[a.status]
-    }).sort((a, b) => {
-      return new Date(b.timestamp) > new Date(a.timestamp)
+      const statusComparison = statusOrder[b.status] - statusOrder[a.status]
+      if (statusComparison !== 0) {
+        return statusComparison
+      }
+      return new Date(b.timestamp) - new Date(a.timestamp)
     })
+
+    console.log(homeworkData.value)
 
   } catch (error) {
     cleanJwt()
