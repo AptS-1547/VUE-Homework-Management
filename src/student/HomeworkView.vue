@@ -40,7 +40,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getStudentHomeworks } from '@/api/homework.js'
+import { getStudentHomework } from '@/api/homework.js'
 import { cleanJwt } from '../utils/auth';
 import router from '../router';
 
@@ -49,7 +49,7 @@ const homeworkData = ref([])
 
 onMounted(async () => {
   try {
-    const data = await getStudentHomeworks()
+    const data = await getStudentHomework()
     homeworks.value = data
 
     // 将 homework_data 对象转换为数组

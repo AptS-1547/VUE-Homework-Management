@@ -61,7 +61,7 @@
   import { ref, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { cleanJwt } from '../utils/auth';
-  import { getStudentHomeworks } from '@/api/homework.js'
+  import { getStudentHomework } from '@/api/homework.js'
 
   const route = useRoute()
   const router = useRouter()
@@ -84,7 +84,7 @@
 
   onMounted(async () => {
     try {
-        const data = await getStudentHomeworks()
+        const data = await getStudentHomework()
         homeworkData.value = data.homework_data[homeworkName.value]
 
         if (homeworkData.value.comment === "") {

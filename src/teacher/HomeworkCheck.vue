@@ -62,7 +62,7 @@
   import { useRouter, useRoute } from 'vue-router'
   import MessageInfo from '@/components/MessageInfo.vue'
   import { cleanJwt } from '../utils/auth';
-  import { getTeacherHomeworks } from '../api/homework';
+  import { getTeacherHomework } from '../api/homework';
   import { replyHomework } from '../api/upload';
 
   const route = useRoute()
@@ -93,7 +93,7 @@
 
   onMounted(async () => {
     try {
-        const data = await getTeacherHomeworks({ student: studentName.value, homework: homeworkName.value })
+        const data = await getTeacherHomework({ student: studentName.value, homework: homeworkName.value })
         homeworkData.value = data.homework_data
 
         if (homeworkData.value.comment === "") {

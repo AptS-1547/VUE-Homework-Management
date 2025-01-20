@@ -4,6 +4,7 @@
       <header>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ homeworkName }}</h1>
+          <p class="mt-1 text-lg text-gray-500">{{ homeworkContent }}</p>
         </div>
       </header>
       <main>
@@ -29,18 +30,31 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
+  import { getStudentHomework } from '../api/homework'
   import { uploadHomework } from '@/api/upload'
   import MessageInfo from '@/components/MessageInfo.vue'
 
   const route = useRoute()
   const router = useRouter()
   const homeworkName = ref(route.params.name)
+  const homeworkContent = ref('本作业没有描述')
 
   const isSubmitting = ref(false)
 
   const messageInfo = ref(null)
+
+  onMounted(async () => {
+    try {
+      const data = await getStudentHomework({homework: homeworkName.value})
+      if (data.homework_data.content !== "") {
+        homeworkContent.value = data.homework_data.content
+      }
+    } catch (error) {
+      console.error('Failed to fetch homework:', error.message)
+    }
+  })
 
   const handleUpload = async () => {
     try {
@@ -62,7 +76,7 @@
         messageInfo.value.setMessage('作业提交成功', 'success')
         setTimeout(() => {
             router.push('/')
-        }, 2000)
+        }, 1000)
       } else {
         messageInfo.value.setMessage('作业提交失败', 'error')
         isSubmitting.value = false
