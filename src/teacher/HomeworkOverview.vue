@@ -63,8 +63,6 @@ onMounted(async () => {
       return new Date(b.timestamp) - new Date(a.timestamp)
     })
 
-    console.log(homeworkData.value)
-
   } catch (error) {
     cleanJwt()
     router.push("/login")
