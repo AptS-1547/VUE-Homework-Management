@@ -105,9 +105,28 @@
     }
   }
   
-  const navigation = ref([
-    { name: '主页', href: '/' },
-  ])
+  const navigation = ref()
+
+  if (user.value && user.value.role === 'student') {
+    navigation.value = [
+      { name: '首页', href: '/' },
+    ]
+  } else if (user.value && user.value.role === 'classrep') {
+    navigation.value = [
+      { name: '首页', href: '/' },
+      { name: '作业上传状态', href: '/homework' },
+    ]
+  } else if (user.value && user.value.role === 'teacher') {
+    navigation.value = [
+      { name: '首页', href: '/' },
+    ]
+  } else {
+    navigation.value = [
+      { name: '首页', href: '/' },
+      { name: '关于', href: '/about' },
+    ]
+  }
+
   </script>
   
   <style scoped>
