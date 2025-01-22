@@ -88,6 +88,8 @@
       cleanJwt()
       router.push('/login')
     }
+  } else if (route.name === 'AboutView') {
+    router.push('/about')
   } else {
     router.push('/login')
   }
