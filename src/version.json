@@ -1,0 +1,5 @@
+{
+  "version": "2025-01-29T03:00:27.314Z",
+  "commitHash": "024f96916be161b6a654fa2c59e61e6e802b033c",
+  "commitMessage": "更新 README 文件，添加项目结构和 API 文档；修改 .gitignore 文件以排除 PDF 文件；修复登录页面的记住我功能逻辑"
+}
