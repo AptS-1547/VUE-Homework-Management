@@ -1,5 +1,4 @@
 <template>
-    <Header />
     <div class="bg-white py-24 md:py-32">
       <div class="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
         <div class="max-w-2xl xl:col-span-2">
@@ -39,7 +38,6 @@
   </template>
   
   <script setup>
-  import Header from '../components/Header.vue'
   const people = [
     {
       name: 'AptS:1547',

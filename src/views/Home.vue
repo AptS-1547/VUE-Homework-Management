@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
     <main>
       <component :is="dynamicComponent" />
     </main>
@@ -11,7 +10,6 @@
 import { shallowRef, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getUserRole } from '../utils/auth'
-import Header from '../components/Header.vue'
 import HomeworkView from '@/student/HomeworkView.vue'
 import HomeworkOverview from '@/teacher/HomeworkOverview.vue'
 

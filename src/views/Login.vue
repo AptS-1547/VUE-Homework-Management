@@ -1,6 +1,5 @@
 <template>
-    <div>
-      <Header />        
+    <div>    
       <MessageInfo ref="messageInfo" />
     
       <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 mx-auto p-6">
@@ -60,7 +59,6 @@
 
   import { login } from '@/api'
   import { isLogin } from '@/utils/auth'
-  import Header from '@/components/Header.vue'
   import MessageInfo from '@/components/MessageInfo.vue'
 
   const router = useRouter()

@@ -6,7 +6,6 @@ export function getUserFromToken() {
     const token = Cookies.get("access_token")
     return jwtDecode(token)
   } catch (error) {
-    console.error('Invalid token:', error)
     return null
   }
 }

@@ -47,52 +47,62 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { getUserFromToken, isLogin, cleanJwt, getUsername } from '../utils/auth'
   
   import {
     Dialog,
     DialogPanel,
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Popover,
-    PopoverButton,
-    PopoverGroup,
-    PopoverPanel,
   } from '@headlessui/vue'
   import {
-    ArrowPathIcon,
     Bars3Icon,
-    ChartPieIcon,
-    CursorArrowRaysIcon,
-    FingerPrintIcon,
-    SquaresPlusIcon,
     XMarkIcon,
   } from '@heroicons/vue/24/outline'
-  import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/vue/20/solid'
 
   const mobileMenuOpen = ref(false)
   const router = useRouter()
   const route = useRoute()
-  
-  const isLoggedIn = isLogin()
+  const navigation = ref()
+  const isLoggedIn = ref(isLogin())
   let user = ref(null)
 
-  if (isLoggedIn) {
-    try {
-      user.value = getUserFromToken()
-    } catch (error) {
-      console.error('Failed to decode token:', error)
-      cleanJwt()
+  watch(route, () => {
+    isLoggedIn.value = isLogin()
+    if (isLoggedIn) {
+      try {
+        user.value = getUserFromToken()
+      } catch (error) {
+        console.error('Failed to decode token:', error)
+        cleanJwt()
+        router.push('/login')
+      }
+    } else if (route.name === 'AboutView') {
+      router.push('/about')
+    } else {
       router.push('/login')
     }
-  } else if (route.name === 'AboutView') {
-    router.push('/about')
-  } else {
-    router.push('/login')
-  }
+
+    if (user.value && user.value.role === 'student') {
+      navigation.value = [
+        { name: '首页', href: '/' },
+      ]
+    } else if (user.value && user.value.role === 'classrep') {
+      navigation.value = [
+        { name: '首页', href: '/' },
+        { name: '作业上传状态', href: '/homework' },
+      ]
+    } else if (user.value && user.value.role === 'teacher') {
+      navigation.value = [
+        { name: '首页', href: '/' },
+      ]
+    } else {
+      navigation.value = [
+        { name: '首页', href: '/' },
+        { name: '关于', href: '/about' },
+      ]
+    }
+  }, { immediate: true })
 
   function logout() {
     cleanJwt()
@@ -106,29 +116,6 @@
       })
     }
   }
-  
-  const navigation = ref()
-
-  if (user.value && user.value.role === 'student') {
-    navigation.value = [
-      { name: '首页', href: '/' },
-    ]
-  } else if (user.value && user.value.role === 'classrep') {
-    navigation.value = [
-      { name: '首页', href: '/' },
-      { name: '作业上传状态', href: '/homework' },
-    ]
-  } else if (user.value && user.value.role === 'teacher') {
-    navigation.value = [
-      { name: '首页', href: '/' },
-    ]
-  } else {
-    navigation.value = [
-      { name: '首页', href: '/' },
-      { name: '关于', href: '/about' },
-    ]
-  }
-
   </script>
   
   <style scoped>
