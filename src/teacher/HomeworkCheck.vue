@@ -48,9 +48,9 @@
       </main>
     </div>
 
-    <!-- 模态框 -->
-    <div @click="closeModal" v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="bg-white p-4 rounded-lg">
+    <!-- 模态框 需要动态展示拉动条 -->
+    <div @click="closeModal" v-if="isModalOpen" class="fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 overflow-y-auto p-8">
+      <div class="bg-white rounded-lg p-4 overflow-y-auto">
         <img :src="modalImageSrc" alt="放大图片" class="max-w-full max-h-full" />
         <button @click="closeModal" class="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">关闭</button>
       </div>
