@@ -7,13 +7,20 @@
           <component :is="item.icon" class="size-6" aria-hidden="true" />
         </a>
       </div>
-      <p class="mt-8 text-center text-sm/6 text-gray-600 md:order-1 md:mt-0">&copy; 2024 Your Company, Inc. All rights reserved.</p>
+      <div class="mt-8 text-left text-sm/6 text-gray-600 md:order-1 md:mt-0">
+        <p>&copy; 2021-2025 The ESAP Project, All Rights Reserved.</p>
+        <br />
+        <p>版本号: {{ versionInfo.version }}</p>
+        <p>提交哈希: {{ versionInfo.commitHash }}</p>
+        <p>提交信息: {{ versionInfo.commitMessage }}</p>
+      </div>
     </div>
   </footer>
 </template>
 
 <script setup>
 import { defineComponent, h } from 'vue'
+import versionInfo from '@/version.json';
 
 const navigation = [
   {

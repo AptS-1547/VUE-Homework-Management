@@ -1,5 +1,5 @@
 {
-  "version": "2025-01-29T03:00:27.314Z",
-  "commitHash": "024f96916be161b6a654fa2c59e61e6e802b033c",
-  "commitMessage": "更新 README 文件，添加项目结构和 API 文档；修改 .gitignore 文件以排除 PDF 文件；修复登录页面的记住我功能逻辑"
+  "version": "2025-01-29T04:39:45.039Z",
+  "commitHash": "595871e692e347f4e176e854c5ab910c123a078e",
+  "commitMessage": "优化 index.html 和 App.vue，新增 Footer 组件并在应用中引入；调整 Footer 样式和导航链接"
 }
