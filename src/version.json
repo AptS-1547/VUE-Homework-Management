@@ -1,5 +1,0 @@
-{
-  "version": "2025-01-29T04:39:45.039Z",
-  "commitHash": "595871e692e347f4e176e854c5ab910c123a078e",
-  "commitMessage": "优化 index.html 和 App.vue，新增 Footer 组件并在应用中引入；调整 Footer 样式和导航链接"
-}

@@ -49,7 +49,7 @@
   <script setup>
   import { ref, watch } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { getUserFromToken, isLogin, cleanJwt, getUsername } from '../utils/auth'
+  import { getUserFromToken, isLogin, cleanJwt, getUsername } from '@/utils/auth'
   
   import {
     Dialog,

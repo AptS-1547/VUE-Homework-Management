@@ -9,7 +9,7 @@
 <script setup>
 import { shallowRef, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { getUserRole } from '../utils/auth'
+import { getUserRole, isLogin } from '@/utils/auth'
 import HomeworkView from '@/student/HomeworkView.vue'
 import HomeworkOverview from '@/teacher/HomeworkOverview.vue'
 
@@ -24,6 +24,8 @@ onMounted(() => {
     dynamicComponent.value = HomeworkView
   } else if (role === 'teacher') {
     dynamicComponent.value = HomeworkOverview
+  } else if (!isLogin()) {
+    window.location.href = '/login'
   } else {
     window.location.href = '/404'
   }
