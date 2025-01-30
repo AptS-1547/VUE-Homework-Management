@@ -69,7 +69,7 @@
 
   watch(route, () => {
     isLoggedIn.value = isLogin()
-    if (isLoggedIn) {
+    if (isLoggedIn.value) {
       try {
         user.value = getUserFromToken()
       } catch (error) {
@@ -102,6 +102,7 @@
         { name: '关于', href: '/about' },
       ]
     }
+    return true
   }, { immediate: true })
 
   function logout() {

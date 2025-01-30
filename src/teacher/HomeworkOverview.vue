@@ -1,9 +1,41 @@
-<template>
-  <div>
-    <h2 class="text-3xl font-bold text-center my-8">学生作业提交情况</h2>
-    <p class="text-center mb-4">目前总共提交了{{ homeworkData.length }}份作业</p>
-  </div>
-    <div class="overflow-x-auto max-w-screen-xl mx-auto">
+  <template>
+    <div class="overflow-hidden rounded-lg bg-white shadow-sm py-1">
+      <div class="flex flex-wrap items-center gap-6 sm:flex-nowrap px-4 py-5 sm:p-6">
+        <h1 class="text-base/7 font-semibold text-gray-900">学生作业提交情况</h1>
+        <p class="text-sm/6 text-gray-500 border-l px-8">目前总共提交了{{ homeworkData.length }}份作业</p>
+        <div class="ml-auto flex gap-x-12 items-center px-3 py-2 text-sm font-semibold">
+          <a href="#" :class="viewUpdateOption ? 'text-indigo-600' : 'text-gray-700'" @click="changeView(0)">已提交视图</a>
+          <a href="#" :class="viewUpdateOption ? 'text-gray-700' : 'text-indigo-600'" @click="changeView(1)">总表视图</a>
+        </div>
+      </div>
+    </div>
+    <div :class="['overflow-x-auto', 'max-w-screen-xl', 'mx-auto', 'my-6', { 'hidden': viewUpdateOption }]">
+      <div class="block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden ring-1 shadow-sm ring-black/5 sm:rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">学生</th>
+                <th v-for="homework in homeworkList" :key="homework" scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">{{ homework }}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr v-for="(hwStatus, StuName, index ) in homeworkUploadStatus" :key="StuName" :disabled="!hasPermission" :class="hasPermission ? 'cursor-pointer' : 'cursor-not-allowed'" @click="hasPermission ? goToHomeworkCheck(homework.name, homework.student) : null">
+                <td class="py-5 pr-3 pl-4 text-sm whitespace-nowrap text-gray-900 sm:pl-6">
+                  <div>{{ StuName }}</div>
+                </td>
+                <td v-for="status in hwStatus" class="px-3 py-5 text-sm whitespace-nowrap text-gray-500">
+                  <span v-if="status === 0" class="inline-flex items-center rounded-md bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-200/20 ring-inset">未提交</span>
+                  <span v-else-if="status === 1" class="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-green-200/20 ring-inset">已提交</span>
+                  <span v-else-if="status === 2" class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-800 ring-1 ring-red-200/20 ring-inset">已批改</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div :class="['overflow-x-auto', 'max-w-screen-xl', 'mx-auto', 'my-6', { 'hidden': !viewUpdateOption }]">
       <div class="block min-w-full py-2 sm:px-6 lg:px-8">
         <div class="overflow-hidden ring-1 shadow-sm ring-black/5 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-300">
@@ -37,46 +69,73 @@
         </div>
       </div>
     </div>
-</template>
+  </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { getTeacherHomework } from '@/api/homework.js'
-import { cleanJwt, getUserRole } from '../utils/auth';
-import router from '../router';
+  <script setup>
+  import { ref, onMounted } from 'vue'
+  import { getTeacherHomework, getUploadStatus } from '@/api/homework.js'
+  import { cleanJwt, getUserRole } from '../utils/auth';
+  import router from '../router';
 
-const homeworks = ref({ homework_data: {} })
-const homeworkData = ref([])
-const hasPermission = ref(false)
+  const homeworks = ref({ homework_data: {} })
+  const homeworkData = ref([])
+  const homeworkStatus = ref({})
+  const homeworkList = ref([])
+  const homeworkUploadStatus = ref({})
+  const hasPermission = ref(false)
+  const viewUpdateOption = ref(true)
 
-onMounted(async () => {
-  try {
-    const data = await getTeacherHomework()
-    homeworks.value = data
-
-    if (getUserRole() === 'teacher') {
-      hasPermission.value = true
+  const changeView = (num) => {
+    if (num === 0) {
+      viewUpdateOption.value = true
+    } else {
+      viewUpdateOption.value = false
     }
-
-    // 将 homework_data 对象转换为数组
-    homeworkData.value = Object.values(homeworks.value.homework_data).sort((a, b) => {
-      const statusOrder = { 1: 2, 2: 0, 0: 1 }
-      const statusComparison = statusOrder[b.status] - statusOrder[a.status]
-      if (statusComparison !== 0) {
-        return statusComparison
-      }
-      return new Date(b.timestamp) - new Date(a.timestamp)
-    })
-
-  } catch (error) {
-    cleanJwt()
-    router.push("/login")
-    console.error('Failed to fetch homeworks:', error.message)
   }
-})
 
-const goToHomeworkCheck = (homeworkName, studentName) => {
-    router.push({ name: 'HomeworkCheck', params: { name: homeworkName, student: studentName } })
-}
+  onMounted(async () => {
+    try {
+      if (getUserRole() === 'teacher') {
+        hasPermission.value = true
+      }
 
-</script>
+      const homworkData = await getTeacherHomework()
+      homeworks.value = homworkData
+
+      // 将 homework_data 对象转换为数组
+      homeworkData.value = Object.values(homeworks.value.homework_data).sort((a, b) => {
+        const statusOrder = { 1: 2, 2: 0, 0: 1 }
+        const statusComparison = statusOrder[b.status] - statusOrder[a.status]
+        if (statusComparison !== 0) {
+          return statusComparison
+        }
+        return new Date(b.timestamp) - new Date(a.timestamp)
+      })
+
+      const statusData = await getUploadStatus()
+      homeworkStatus.value = statusData
+      homeworkList.value = Object.values(homeworkStatus.value.homework_list)
+
+      for (let studentName in homeworkStatus.value.return_data) {
+        let temp_data = new Array(homeworkList.value.length).fill(0);
+        homeworkStatus.value.return_data[studentName].forEach((homework) => {
+          for (let homeworkName in homework) {
+            const index = homeworkList.value.indexOf(homeworkName)
+            temp_data[index] = homework[homeworkName]
+          }
+        })
+        homeworkUploadStatus.value[studentName] = temp_data
+      }
+
+    } catch (error) {
+      cleanJwt()
+      router.push("/login")
+      console.error('Failed to fetch homeworks:', error.message)
+    }
+  })
+
+  const goToHomeworkCheck = (homeworkName, studentName) => {
+      router.push({ name: 'HomeworkCheck', params: { name: homeworkName, student: studentName } })
+  }
+
+  </script>

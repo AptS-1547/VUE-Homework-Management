@@ -73,3 +73,21 @@ export async function getTeacherHomework(params = {}) {
       throw new Error(error.response.data.message || 'Failed to fetch homeworks')
     }
 }
+
+export async function getUploadStatus() {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/teacher/getUploadStatus`, {
+        headers: {
+          'Authorization': `Bearer ${getJwt()}`
+      }
+    })
+    return response.data
+  } catch (error) {
+    if (error.response.status === 401) {
+      cleanJwt()
+      window.location.href = '/login'
+      throw new Error('Unauthorized')
+    }
+    throw new Error(error.response.data.message || 'Failed to fetch upload status')
+  }
+}
