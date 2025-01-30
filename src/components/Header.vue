@@ -80,26 +80,30 @@
     } else if (route.name === 'AboutView') {
       router.push('/about')
     } else {
+      console.log(route.name)
+      console.log('Not logged in, redirecting to login page')
       router.push('/login')
     }
 
     if (user.value && user.value.role === 'student') {
       navigation.value = [
         { name: '首页', href: '/' },
+        { name: '关于', href: '/about' },
       ]
     } else if (user.value && user.value.role === 'classrep') {
       navigation.value = [
         { name: '首页', href: '/' },
         { name: '作业上传状态', href: '/homework' },
+        { name: '关于', href: '/about' },
       ]
     } else if (user.value && user.value.role === 'teacher') {
       navigation.value = [
         { name: '首页', href: '/' },
+        { name: '关于', href: '/about' },
       ]
     } else {
       navigation.value = [
         { name: '首页', href: '/' },
-        { name: '关于', href: '/about' },
       ]
     }
     return true
