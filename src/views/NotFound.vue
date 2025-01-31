@@ -14,6 +14,4 @@
   </template>
 
   <script setup>
-  import { shallowRef, onMounted } from 'vue'
-
   </script>
