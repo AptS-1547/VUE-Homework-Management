@@ -1,18 +1,23 @@
   <template>
     <div class="overflow-hidden rounded-lg bg-white shadow-sm py-1">
       <div class="flex flex-wrap items-center gap-6 sm:flex-nowrap px-4 py-5 sm:p-6">
-        <h1 class="text-base/7 font-semibold text-gray-900">学生作业提交情况</h1>
-        <p class="text-sm/6 text-gray-500 border-l px-8">目前总共提交了{{ homeworkData.length }}份作业</p>
-        <div class="ml-auto flex gap-x-12 items-center px-3 py-2 text-sm font-semibold">
+        <h1 class="gap-4 sm:gap-6 sm:border-gray-200 sm:border-r">
+          <div class="text-2xl font-semibold text-gray-900 sm:px-8">学生作业提交情况</div>
+          <div class="text-sm text-gray-500 sm:px-8">目前总共提交了{{ homeworkData.length }}份作业</div>
+        </h1>
+        <div class="order-last flex w-full gap-x-8 text-sm/6 font-semibold sm:order-none sm:w-auto sm:pl-8 sm:text-sm/7">
           <a href="#" :class="viewUpdateOption ? 'text-indigo-600' : 'text-gray-700'" @click="changeView(0)">已提交视图</a>
           <a href="#" :class="viewUpdateOption ? 'text-gray-700' : 'text-indigo-600'" @click="changeView(1)">总表视图</a>
         </div>
+        <a @click="exportTableToExcel('作业总表.xlsx')" href="#" class="ml-auto flex items-center gap-x-1 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          导出作业总表
+        </a>
       </div>
     </div>
     <div :class="['overflow-x-auto', 'max-w-screen-xl', 'mx-auto', 'my-6', { 'hidden': viewUpdateOption }]">
       <div class="block min-w-full py-2 sm:px-6 lg:px-8">
         <div class="overflow-hidden ring-1 shadow-sm ring-black/5 sm:rounded-lg overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-300">
+          <table class="min-w-full divide-y divide-gray-300" id="homework-summary">
             <thead>
               <tr>
                 <th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">学生</th>
@@ -73,6 +78,7 @@
 
   <script setup>
   import { ref, onMounted } from 'vue'
+import { writeFile, utils } from 'xlsx'
   import { getTeacherHomework, getUploadStatus } from '@/api/homework.js'
   import { cleanJwt, getUserRole } from '../utils/auth';
   import router from '../router';
@@ -136,6 +142,14 @@
 
   const goToHomeworkCheck = (homeworkName, studentName) => {
       router.push({ name: 'HomeworkCheck', params: { name: homeworkName, student: studentName } })
+  }
+
+  const exportTableToExcel = (filename) => {
+    var table = document.getElementById("homework-summary");
+    console.log(table)
+    var wb = utils.table_to_book(table, { sheet: "作业总表" });
+    // 导出为Excel文件
+    writeFile(wb, filename);
   }
 
   </script>
