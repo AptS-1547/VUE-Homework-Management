@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getJwt, cleanJwt } from '@/utils/auth'
 
-export async function uploadHomework(homework_name, comment, files) {
+export async function uploadHomework(homework_name, comment, files, callback) {
     try {
         const formData = new FormData()
         formData.append('homework_name', homework_name)
@@ -14,6 +14,10 @@ export async function uploadHomework(homework_name, comment, files) {
             headers: {
                 'Authorization': `Bearer ${getJwt()}`,
                 'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: (progressEvent) => {
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                callback(percentCompleted)
             }
         })
         return response.data
