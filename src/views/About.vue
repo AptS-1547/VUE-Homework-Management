@@ -38,23 +38,20 @@
   </template>
   
   <script setup>
-  const people = [
-    {
-      name: 'AptS:1547',
-      role: '运维 / 全栈',
-      imageUrl:
-        'https://cn.cravatar.com/avatar/f42f9f288e5ba41aef369b4edd3c5f5c?d=retro&s=1024',
-      bio: '我们在少量的 Nginx 配置文件中找到了大量的 CORS 跨域错误',
-      githubUrl: 'https://github.com/AptS-1547/',
-    },
-    {
-      name: 'AptS:1548',
-      role: '运维 / 后端',
-      imageUrl:
-        'https://weavatar.com/avatar/eafbce3047d71170f941afb26ce954fa?s=1024&d=mm&r=g',
-      bio: '喵喵喵？',
-      githubUrl: 'https://github.com/AptS-1548/',
+  import axios from 'axios'
+  import {ref,onMounted}from'vue'
+  const people = ref([])
+  async function fetchAuthors(limit = 4) {
+    try{
+      const response = await axios.get('https://api.esaps.host/api/v1/about',{
+        params: { limit }
+      });
+      people.value = response.data.data || [];
+    } catch (error) {
+      console.error('Erroe fetching authors:', error);
     }
-  ]
-  
-  </script>
+  }
+  onMounted(() => {
+      fetchAuthors();
+  });
+    </script>
