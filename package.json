@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node generate-version.js",
     "dev": "vite",
     "build": "vite build",
     "prebuild": "rm -rf dist && mkdir dist && node generate-version.js",
