@@ -30,10 +30,9 @@
                 <div class="flex gap-3">
                   <div class="flex h-6 shrink-0 items-center">
                     <div class="group grid size-4 grid-cols-1">
-                      <input v-model="rememberMe" id="remember-me" name="remember-me" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"/>
-                      <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
-                        <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path class="opacity-0 group-has-indeterminate:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <input v-model="rememberMe" @change="saveRememberMeState" id="remember-me" name="remember-me" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"/>
+                      <svg :class="{ 'opacity-100': rememberMe, 'opacity-0':!rememberMe }" class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
+                        <path d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
                     </div>
                   </div>
@@ -52,7 +51,7 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
 
   import Cookies from 'js-cookie' 
@@ -65,7 +64,7 @@
 
   const username = ref('')
   const password = ref('')
-  const rememberMe = ref(Boolean)
+  const rememberMe = ref(false)
 
   const messageInfo = ref(null)
 
@@ -73,11 +72,21 @@
     router.push('/')
   }
 
-  rememberMe.value = true
+  // 保存复选框状态到 localStorage
+  const saveRememberMeState = () => {
+    localStorage.setItem('rememberMe', rememberMe.value);
+  }
+
+  // 在组件挂载时读取 localStorage 中的状态
+  onMounted(() => {
+    const storedRememberMe = localStorage.getItem('rememberMe');
+    if (storedRememberMe!== null) {
+      rememberMe.value = JSON.parse(storedRememberMe);
+    }
+  })
 
   async function handleLogin() {
     try {
-
       messageInfo.value.setMessage('登录中……', 'info')
       const response = await login(username.value, password.value, rememberMe.value)
 
@@ -85,7 +94,7 @@
         messageInfo.value.setMessage('用户名或密码错误', 'error')
       } else if (response.code === 0) {
         const token = response.access_token
-        Cookies.set('access_token', token, { expires: rememberMe.value === true ? 30 : null }) // 设置cookie，7天过期时间
+        Cookies.set('access_token', token, { expires: rememberMe.value === true? 30 : null }) 
         router.push('/')
       } else {
         messageInfo.value.setMessage('系统错误: ' + response.message, 'error')
@@ -98,4 +107,11 @@
   </script>
   
   <style scoped>
+  /* 定义 opacity-0 和 opacity-100 类 */
+  .opacity-0 {
+    opacity: 0;
+  }
+  .opacity-100 {
+    opacity: 1;
+  }
   </style>
