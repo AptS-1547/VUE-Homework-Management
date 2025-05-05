@@ -1,6 +1,6 @@
 # 作业管理系统 (Homework Management System)
 
-**⚠️ 注意：本项目为 AutoBits 前段面试题，不能直接用于生产环境。本项目已停止维护。**
+**⚠️ 注意：本项目为 AutoBits 前段面试题，不能直接用于生产环境。本项目已停止维护。**  
 **⚠️ Note: This project is an AutoBits front-end interview question and cannot be used directly in production. This project has been discontinued.**
 
 基于 Vue 3、Vite 和 TailwindCSS 构建的现代化作业管理系统。该系统提供了完整的学生作业上传、教师批改流程和用户权限管理功能。
