@@ -30,7 +30,10 @@
                 <div class="flex gap-3">
                   <div class="flex h-6 shrink-0 items-center">
                     <div class="group grid size-4 grid-cols-1">
-                      <input v-model="rememberMe" id="remember-me" name="remember-me" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"/>
+                      <!-- 复选框标签 -->
+                       <!-- 删除appearance none以显示复选框的默认样式，有对勾✅ -->
+                      <input v-model="rememberMe" id="remember-me" name="remember-me" type="checkbox" />
+                      <!-- 复选框标签结束 -->
                       <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
                         <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         <path class="opacity-0 group-has-indeterminate:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -50,7 +53,7 @@
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
@@ -61,11 +64,15 @@
   import { isLogin } from '@/utils/auth'
   import MessageInfo from '@/components/MessageInfo.vue'
 
+  import { onMounted, watch } from 'vue'
+
   const router = useRouter()
 
   const username = ref('')
   const password = ref('')
-  const rememberMe = ref(Boolean)
+
+  // 复选框
+  const rememberMe = ref(false)
 
   const messageInfo = ref(null)
 
@@ -73,7 +80,8 @@
     router.push('/')
   }
 
-  rememberMe.value = true
+  // 复选框，默认为未选中状态
+  rememberMe.value = false
 
   async function handleLogin() {
     try {
@@ -83,7 +91,9 @@
 
       if (response.code === 1) {
         messageInfo.value.setMessage('用户名或密码错误', 'error')
-      } else if (response.code === 0) {
+      } 
+      // 操作成功
+      else if (response.code === 0) {
         const token = response.access_token
         Cookies.set('access_token', token, { expires: rememberMe.value === true ? 30 : null }) // 设置cookie，7天过期时间
         router.push('/')
@@ -95,6 +105,23 @@
       messageInfo.value.setMessage('系统错误', 'error')
     }
   }
+
+// 复选框逻辑
+
+// 初始化时从 localStorage 读取保存的状态
+
+// 组件挂载后恢复状态
+onMounted(() => {
+  const savedValue = localStorage.getItem('rememberMe')
+  if (savedValue !== null) {
+    rememberMe.value = JSON.parse(savedValue)
+  }
+})
+
+// 监听变化并持久化到 localStorage
+watch(rememberMe, (newValue) => {
+  localStorage.setItem('rememberMe', JSON.stringify(newValue))
+})
   </script>
   
   <style scoped>
